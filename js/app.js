@@ -14,16 +14,27 @@ var SALON = {
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
   var fmt = function (n) { return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' '); };
 
+  /* Полоса с предложением: можно закрыть */
+  var offer = $('#offer');
+  if (offer) {
+    try { if (localStorage.getItem('rl-offer-x')) offer.classList.add('hide'); } catch (e) {}
+    $('.offer-x', offer).addEventListener('click', function () {
+      offer.classList.add('hide');
+      try { localStorage.setItem('rl-offer-x', '1'); } catch (e) {}
+    });
+  }
+
   /* Меню на телефоне */
   var burger = $('.burger'), mnav = $('.mnav');
   if (burger && mnav) {
     burger.addEventListener('click', function () {
       var open = mnav.classList.toggle('open');
+      document.body.style.overflow = open ? 'hidden' : '';
       burger.setAttribute('aria-expanded', open ? 'true' : 'false');
       $('.ic-open', burger).style.display = open ? 'none' : '';
       $('.ic-close', burger).style.display = open ? '' : 'none';
     });
-    $$('a', mnav).forEach(function (a) { a.addEventListener('click', function () { mnav.classList.remove('open'); }); });
+    $$('a', mnav).forEach(function (a) { a.addEventListener('click', function () { mnav.classList.remove('open'); document.body.style.overflow = ''; }); });
   }
 
   /* Ссылки WhatsApp / Telegram */
@@ -44,6 +55,7 @@ var SALON = {
       b.addEventListener('click', function () {
         $$('.pill', box).forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
         b.setAttribute('aria-pressed', 'true');
+        if (box.classList.contains('row') && box.scrollWidth > box.clientWidth) box.scrollTo({ left: b.offsetLeft - 20, behavior: 'smooth' });
         onPick(b.getAttribute('data-v'));
       });
     });
