@@ -8,7 +8,7 @@
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--por);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.55;overflow-x:clip}
-img{max-width:100%;display:block}
+img{max-width:100%;height:auto;display:block}
 h1,h2,h3{font-family:var(--serif);font-weight:400;margin:0;line-height:1.15}
 p{margin:0}
 a{color:var(--wood)}a:hover{color:var(--wood-d)}
@@ -171,6 +171,7 @@ legend{font-weight:600;font-size:15px;margin-bottom:12px;padding:0}
 .master .role{color:var(--wood);font-weight:600}
 .master .spec{color:var(--muted);font-size:15px}
 .mini-works{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+
 .mini-works img{aspect-ratio:4/5;object-fit:cover;border-radius:14px;width:100%;background:var(--plum)}
 
 /* gift */

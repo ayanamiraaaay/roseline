@@ -2,7 +2,10 @@
    НАСТРОЙКИ САЛОНА: замените номера на настоящие перед запуском. */
 var SALON = {
   whatsapp: '37400000000',      // номер WhatsApp без «+» и пробелов
-  telegram: 'roseline_salon'    // имя пользователя Telegram без «@»
+  telegram: 'roseline_salon',   // имя пользователя Telegram без «@»
+  // Ссылка на виджет сервиса онлайн-записи (например, онлайн-журнал салона).
+  // Если указана, все кнопки «Записаться» ведут в него. Если пусто — работает форма на сайте.
+  bookingUrl: ''
 };
 
 (function () {
@@ -26,6 +29,14 @@ var SALON = {
   /* Ссылки WhatsApp / Telegram */
   $$('[data-wa]').forEach(function (a) { a.href = 'https://wa.me/' + SALON.whatsapp; });
   $$('[data-tg]').forEach(function (a) { a.href = 'https://t.me/' + SALON.telegram; });
+
+  /* Внешний сервис онлайн-записи */
+  if (SALON.bookingUrl) {
+    $$('a[href^="contacts.html"]').forEach(function (a) {
+      if (a.closest('nav') && !a.classList.contains('btn')) return;
+      a.href = SALON.bookingUrl; a.target = '_blank'; a.rel = 'noopener';
+    });
+  }
 
   /* Группа кнопок-переключателей */
   function pillGroup(box, onPick) {
@@ -68,6 +79,16 @@ var SALON = {
     pillGroup(wf, function (v) {
       $$('#works-grid .work').forEach(function (w) {
         w.style.display = (v === 'all' || w.getAttribute('data-cat') === v) ? '' : 'none';
+      });
+    });
+  }
+
+  /* Подбор мастера под задачу */
+  var mf = $('#masters-filter');
+  if (mf) {
+    pillGroup(mf, function (v) {
+      $$('#masters .master').forEach(function (m) {
+        m.style.display = (v === 'all' || m.getAttribute('data-tags').split(' ').indexOf(v) > -1) ? '' : 'none';
       });
     });
   }
